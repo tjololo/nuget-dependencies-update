@@ -1,0 +1,40 @@
+{
+  "name": "nuget-dependencies-update",
+  "version": "1.0.0",
+  "description": "Update nuget dependencies in your dotnet project",
+  "main": "lib/main.js",
+  "scripts": {
+    "build": "tsc && ncc build --license license.txt",
+    "test": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tjololo/nuget-dependencies-update.git"
+  },
+  "keywords": [
+    "nuget",
+    "dotnet",
+    "dependencies",
+    "github",
+    "actions",
+    "automation"
+  ],
+  "author": "tjololo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tjololo/nuget-dependencies-update/issues"
+  },
+  "homepage": "https://github.com/tjololo/nuget-dependencies-update#readme",
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "@vercel/ncc": "^0.29.1",
+    "jest": "^27.0.6",
+    "jest-sonar-reporter": "^2.0.0",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "@actions/core": "^1.4.0",
+    "@actions/exec": "^1.1.0"
+  }
+}
