@@ -71,9 +71,6 @@ class DotnetCommandManager {
                 case "patch":
                     versionFlag = "--highest-patch";
                     break;
-                default:
-                    versionFlag = "";
-                    break;
             }
             const result = yield this.exec(['list', this.projectfile, 'package', versionFlag, '--outdated']);
             if (result.exitCode !== 0) {
