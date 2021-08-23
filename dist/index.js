@@ -104,6 +104,7 @@ class DotnetCommandManager {
     }
     exec(args) {
         return __awaiter(this, void 0, void 0, function* () {
+            args = args.filter(x => x !== "");
             const env = {};
             for (const key of Object.keys(process.env)) {
                 env[key] = process.env[key];
