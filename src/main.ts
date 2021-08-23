@@ -1,6 +1,5 @@
 import * as core from '@actions/core'
 import { statSync } from 'fs'
-import * as path from 'path'
 import { DotnetCommandManager } from './dotnet-command-manager'
 import { getAllProjects } from './dotnet-project-locator'
 import { PrBodyHelper } from './pr-body'
