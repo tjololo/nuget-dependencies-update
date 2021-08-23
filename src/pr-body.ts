@@ -25,7 +25,7 @@ export class PrBodyHelper {
             }
         }
         if (updatesOutOfScope.length == 0) {
-            body += "\nAfter merging this PR all packages will be updated to the latest version."
+            body += "\nAfter merging this PR all dependencies that are not ignored will be updated to the latest version."
         } else {
             body += "\n### Version updates outside of current version limit\n"
             for (let outdatedPackage of updatesOutOfScope) {
