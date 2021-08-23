@@ -285,7 +285,7 @@ function execute() {
                     core.endGroup();
                     core.startGroup(`append to PR body  ${project}`);
                     const prBodyHelper = new pr_body_1.PrBodyHelper(project, commentUpdated);
-                    body += `${yield prBodyHelper.buildPRBody(outdatedPackages)}\n`;
+                    body += `${yield prBodyHelper.buildPRBody(filteredPackages)}\n`;
                 }
             }
             core.setOutput("body", body);

@@ -40,7 +40,7 @@ async function execute(): Promise<void> {
 
                 core.startGroup(`append to PR body  ${project}`)
                 const prBodyHelper = new PrBodyHelper(project, commentUpdated)
-                body += `${await prBodyHelper.buildPRBody(outdatedPackages)}\n`
+                body += `${await prBodyHelper.buildPRBody(filteredPackages)}\n`
             }
         }
         core.setOutput("body", body)
