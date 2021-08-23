@@ -3,9 +3,9 @@ import { readFileSync } from "fs"
 
 
 test(`list returns list of dependencies eligable for update minor`, async () => {
-    const dcm = await DotnetCommandManager.create("test/fixtures/root/package.json")
+    const dcm = await DotnetCommandManager.create("test/fixtures/root/test.csproj")
     jest.spyOn(dcm, "exec").mockImplementation(async (args): Promise<DotnetOutput> => {
-        if (args[2] === "--highest-minor") {
+        if (args[3] === "--highest-minor") {
             const output = new DotnetOutput(0)
             output.stdout = readFileSync("test/fixtures/dotnet-list-minor.out", "utf8")
             return output
@@ -36,7 +36,7 @@ test(`list returns list of dependencies eligable for update minor`, async () => 
 test(`list returns list of dependencies eligable for update on patch`, async () => {
     const dcm = await DotnetCommandManager.create("test/fixtures/root/package.json")
     jest.spyOn(dcm, "exec").mockImplementation(async (args): Promise<DotnetOutput> => {
-        if (args[2] === "--highest-patch") {
+        if (args[3] === "--highest-patch") {
             const output = new DotnetOutput(0)
             output.stdout = readFileSync("test/fixtures/dotnet-list-patch.out", "utf8")
             return output

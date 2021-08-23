@@ -1,14 +1,17 @@
 import { error } from '@actions/core'
 import * as exec from '@actions/exec'
 import * as io from '@actions/io'
+import { dirname } from 'path'
 
 
 export class DotnetCommandManager {
     private workingDirectory: string
     private dotnetPath: string
+    private projectfile: string
 
     constructor(workingDirectory: string, dotnetPath: string) {
-        this.workingDirectory = workingDirectory
+        this.projectfile = workingDirectory
+        this.workingDirectory = dirname(workingDirectory)
         this.dotnetPath = dotnetPath
     }
 
@@ -18,7 +21,7 @@ export class DotnetCommandManager {
     }
 
     async restore(): Promise<void> {
-        const result = await this.exec(['restore'])
+        const result = await this.exec(['restore', this.projectfile])
         if (result.exitCode !== 0) {
             error(`dotnet restore returned non-zero exitcode: ${result.exitCode}`)
             throw new Error(`dotnet restore returned non-zero exitcode: ${result.exitCode}`)
@@ -38,7 +41,7 @@ export class DotnetCommandManager {
                 versionFlag = ""
                 break;
         }
-        const result = await this.exec(['list', 'package', versionFlag, '--outdated'])
+        const result = await this.exec(['list', this.projectfile, 'package', versionFlag, '--outdated'])
         if (result.exitCode !== 0) {
             error(`dotnet restore returned non-zero exitcode: ${result.exitCode}`)
             throw new Error(`dotnet restore returned non-zero exitcode: ${result.exitCode}`)
@@ -56,7 +59,7 @@ export class DotnetCommandManager {
 
     async addUpdatedPackage(outdatedPackages: OutdatedPackage[]): Promise<void> {
         for (const outdatedPackage of outdatedPackages) {
-            const result = await this.exec(['add', 'package', outdatedPackage.name, '-v', outdatedPackage.wanted])
+            const result = await this.exec(['add', this.projectfile, 'package', outdatedPackage.name, '-v', outdatedPackage.wanted])
             if (result.exitCode !== 0) {
                 error(`dotnet add returned non-zero exitcode: ${result.exitCode}`)
                 throw new Error(`dotnet add returned non-zero exitcode: ${result.exitCode}`)
