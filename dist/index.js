@@ -39,9 +39,11 @@ exports.DotnetOutput = exports.OutdatedPackage = exports.DotnetCommandManager = 
 const core_1 = __nccwpck_require__(186);
 const exec = __importStar(__nccwpck_require__(514));
 const io = __importStar(__nccwpck_require__(436));
+const path_1 = __nccwpck_require__(622);
 class DotnetCommandManager {
     constructor(workingDirectory, dotnetPath) {
-        this.workingDirectory = workingDirectory;
+        this.projectfile = workingDirectory;
+        this.workingDirectory = path_1.dirname(workingDirectory);
         this.dotnetPath = dotnetPath;
     }
     static create(workingDirectory) {
@@ -52,7 +54,7 @@ class DotnetCommandManager {
     }
     restore() {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = yield this.exec(['restore']);
+            const result = yield this.exec(['restore', this.projectfile]);
             if (result.exitCode !== 0) {
                 core_1.error(`dotnet restore returned non-zero exitcode: ${result.exitCode}`);
                 throw new Error(`dotnet restore returned non-zero exitcode: ${result.exitCode}`);
@@ -73,7 +75,7 @@ class DotnetCommandManager {
                     versionFlag = "";
                     break;
             }
-            const result = yield this.exec(['list', 'package', versionFlag, '--outdated']);
+            const result = yield this.exec(['list', this.projectfile, 'package', versionFlag, '--outdated']);
             if (result.exitCode !== 0) {
                 core_1.error(`dotnet restore returned non-zero exitcode: ${result.exitCode}`);
                 throw new Error(`dotnet restore returned non-zero exitcode: ${result.exitCode}`);
@@ -92,7 +94,7 @@ class DotnetCommandManager {
     addUpdatedPackage(outdatedPackages) {
         return __awaiter(this, void 0, void 0, function* () {
             for (const outdatedPackage of outdatedPackages) {
-                const result = yield this.exec(['add', 'package', outdatedPackage.name, '-v', outdatedPackage.wanted]);
+                const result = yield this.exec(['add', this.projectfile, 'package', outdatedPackage.name, '-v', outdatedPackage.wanted]);
                 if (result.exitCode !== 0) {
                     core_1.error(`dotnet add returned non-zero exitcode: ${result.exitCode}`);
                     throw new Error(`dotnet add returned non-zero exitcode: ${result.exitCode}`);
