@@ -84,7 +84,8 @@ class DotnetCommandManager {
             if (versionFlag !== "") {
                 const latestsVersions = yield this.listOutdated("latest");
                 for (const i in latestsVersions) {
-                    latestsVersions[i].wanted = (yield outdated).filter(x => x.name === latestsVersions[i].name)[0].wanted;
+                    const wanted = (yield outdated).filter(x => x.name === latestsVersions[i].name)[0];
+                    latestsVersions[i].wanted = wanted ? wanted.wanted : latestsVersions[i].current;
                 }
                 return latestsVersions;
             }
