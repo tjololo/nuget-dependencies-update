@@ -1,0 +1,29 @@
+name: 'Dotnet dependency update'
+description: 'Github action that checks for outdated dependencies and updates them'
+branding:
+  icon: arrow-up-circle
+  color: gray-dark
+inputs:
+  root-folder:
+    description: 'relative path from repository root where the action should look for `package.json` files'
+    required: true
+    default: '.'
+  recursive:
+    description: 'wether or not the action should look for package.json in sub-folders and update all of them'
+    required: true
+    default: 'true'
+  comment-updated:
+    description: 'wheter or not the dependencies that are update should be included in the body output'
+    required: true
+    default: 'false'
+  version-limit:
+    description: 'Limit if update should update to latest major, minor or patch version. [latest,minor,patch] default: latest'
+    required: true
+    default: 'latest'
+
+outputs:
+  body:
+    description: 'Body reprecenting updates made'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

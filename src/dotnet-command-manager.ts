@@ -56,7 +56,7 @@ export class DotnetCommandManager {
 
     async addUpdatedPackage(outdatedPackages: OutdatedPackage[]): Promise<void> {
         for (const outdatedPackage of outdatedPackages) {
-            const result = await this.exec(['add', 'package', outdatedPackage.name, '-v',outdatedPackage.wanted])
+            const result = await this.exec(['add', 'package', outdatedPackage.name, '-v', outdatedPackage.wanted])
             if (result.exitCode !== 0) {
                 error(`dotnet add returned non-zero exitcode: ${result.exitCode}`)
                 throw new Error(`dotnet add returned non-zero exitcode: ${result.exitCode}`)
