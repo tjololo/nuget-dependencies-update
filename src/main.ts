@@ -4,6 +4,7 @@ import * as path from 'path'
 import { DotnetCommandManager } from './dotnet-command-manager'
 import { getAllProjects } from './dotnet-project-locator'
 import { PrBodyHelper } from './pr-body'
+import { removeIgnoredDependencies } from './utils'
 
 async function execute(): Promise<void> {
     try {
@@ -11,6 +12,7 @@ async function execute(): Promise<void> {
         const commentUpdated = core.getBooleanInput("comment-updated")
         const rootFolder = core.getInput("root-folder")
         const versionLimit = core.getInput("version-limit")
+        const ignoreList = core.getMultilineInput("ignore").filter(s => s.trim() !== "")
         core.startGroup("Find modules")
         const projects: string[] = await getAllProjects(rootFolder, recursive)
         core.endGroup()
@@ -27,8 +29,13 @@ async function execute(): Promise<void> {
                 const outdatedPackages = await dotnet.listOutdated(versionLimit)
                 core.endGroup()
 
+                core.startGroup(`removing nugets present in ignore list ${project}`)
+                const filteredPackages = await removeIgnoredDependencies(outdatedPackages, ignoreList)
+                core.info(`list of dependencies that will be updated: ${filteredPackages}`)
+                core.endGroup()
+
                 core.startGroup(`dotnet install new version ${project}`)
-                await dotnet.addUpdatedPackage(outdatedPackages)
+                await dotnet.addUpdatedPackage(filteredPackages)
                 core.endGroup()
 
                 core.startGroup(`append to PR body  ${project}`)

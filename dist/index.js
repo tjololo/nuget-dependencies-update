@@ -254,6 +254,7 @@ const fs_1 = __nccwpck_require__(747);
 const dotnet_command_manager_1 = __nccwpck_require__(451);
 const dotnet_project_locator_1 = __nccwpck_require__(269);
 const pr_body_1 = __nccwpck_require__(98);
+const utils_1 = __nccwpck_require__(918);
 function execute() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -261,6 +262,7 @@ function execute() {
             const commentUpdated = core.getBooleanInput("comment-updated");
             const rootFolder = core.getInput("root-folder");
             const versionLimit = core.getInput("version-limit");
+            const ignoreList = core.getMultilineInput("ignore").filter(s => s.trim() !== "");
             core.startGroup("Find modules");
             const projects = yield dotnet_project_locator_1.getAllProjects(rootFolder, recursive);
             core.endGroup();
@@ -274,8 +276,12 @@ function execute() {
                     core.startGroup(`dotnet list ${project}`);
                     const outdatedPackages = yield dotnet.listOutdated(versionLimit);
                     core.endGroup();
+                    core.startGroup(`removing nugets present in ignore list ${project}`);
+                    const filteredPackages = yield utils_1.removeIgnoredDependencies(outdatedPackages, ignoreList);
+                    core.info(`list of dependencies that will be updated: ${filteredPackages}`);
+                    core.endGroup();
                     core.startGroup(`dotnet install new version ${project}`);
-                    yield dotnet.addUpdatedPackage(outdatedPackages);
+                    yield dotnet.addUpdatedPackage(filteredPackages);
                     core.endGroup();
                     core.startGroup(`append to PR body  ${project}`);
                     const prBodyHelper = new pr_body_1.PrBodyHelper(project, commentUpdated);
@@ -363,7 +369,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.escapeString = void 0;
+exports.removeIgnoredDependencies = exports.escapeString = void 0;
 const map = {
     '*': '\\*',
     '#': '\\#',
@@ -384,6 +390,12 @@ const escapeString = (string) => __awaiter(void 0, void 0, void 0, function* () 
     return string.replace(/[\*\(\)\[\]\+\-\\_`#<>]/g, m => map[m]);
 });
 exports.escapeString = escapeString;
+const removeIgnoredDependencies = (dependencies, ignore) => __awaiter(void 0, void 0, void 0, function* () {
+    return dependencies.filter((dependency) => {
+        return ignore.indexOf(dependency.name) === -1;
+    });
+});
+exports.removeIgnoredDependencies = removeIgnoredDependencies;
 
 
 /***/ }),

@@ -20,6 +20,10 @@ inputs:
     description: 'Limit if update should update to latest major, minor or patch version. [latest,minor,patch] default: latest'
     required: true
     default: 'latest'
+  ignore:
+    description: 'Nugets to ignore during update. Multiple nugets separated by newline'
+    required: true
+    default: ''
 
 outputs:
   body:
