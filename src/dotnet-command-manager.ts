@@ -50,7 +50,8 @@ export class DotnetCommandManager {
         if (versionFlag !== "") {
             const latestsVersions = await this.listOutdated("latest")
             for (const i in latestsVersions) {
-                latestsVersions[i].wanted = (await outdated).filter(x => x.name === latestsVersions[i].name)[0].wanted
+                const wanted = (await outdated).filter(x => x.name === latestsVersions[i].name)[0]
+                latestsVersions[i].wanted = wanted ? wanted.wanted : latestsVersions[i].current
             }
             return latestsVersions
         }

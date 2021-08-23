@@ -1,0 +1,9 @@
+
+The following sources were used:
+   https://api.nuget.org/v3/index.json
+
+Project `hello-dotnet` has the following updates to its packages
+   [net5.0]: 
+   Top-level Package                                Requested   Resolved   Latest
+   > StackExchange.Redis.Extensions.Newtonsoft      7.0.1       7.0.1      7.0.4 
+
