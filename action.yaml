@@ -21,7 +21,7 @@ inputs:
     required: true
     default: 'latest'
   ignore:
-    description: 'Nugets to ignore during update. Multiple nugets separated by newline'
+    description: 'Dependencies to ignore during update. Multiple nugets separated by newline'
     required: true
     default: ''
 
