@@ -53,8 +53,8 @@ jobs:
 ### Action inputs
 | Name | Description | Default |
 | ---- | ----------- | ------- |
-| `root-folder` | relative path from repository root where the action should look for `package.json` files | `.` |
-| `recursive` | wether or not the action should look for package.json in sub-folders and update all of them | `true` |
+| `root-folder` | relative path from repository root where the action should look for csproj file(s) | `.` |
+| `recursive` | wether or not the action should look for csproj files in sub-folders and update all of them | `true` |
 | `comment-updated` | wheter or not the dependencies that are update should be included in the body output | `false` |
 | `version-limit` | Limit if update should update to latest major, minor or patch version. [latest,minor,patch] | `latest` |
 | `ignore` | Dependencies to ignore during update. Multiple nugets separated by newline | '' |
