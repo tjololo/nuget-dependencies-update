@@ -104,3 +104,6 @@ typings/
 
 # Build folder
 /lib
+
+#sonar-report
+test-report.xml

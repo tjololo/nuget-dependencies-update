@@ -24,6 +24,10 @@ inputs:
     description: 'Dependencies to ignore during update. Multiple nugets separated by newline'
     required: true
     default: ''
+  ignore-project:
+    description: 'If recursive mode is enabled you can specify paths for projects to ignore. Multiple projects separated by newline'
+    required: true
+    default: ''
 
 outputs:
   body:
