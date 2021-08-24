@@ -14,7 +14,7 @@ async function execute(): Promise<void> {
         const ignoreList = core.getMultilineInput("ignore").filter(s => s.trim() !== "")
         const projectIgnoreList = core.getMultilineInput("ignore-project").filter(s => s.trim() !== "")
         core.startGroup("Find modules")
-        const projects: string[] = await getAllProjects(rootFolder, recursive)
+        const projects: string[] = await getAllProjects(rootFolder, recursive, projectIgnoreList)
         core.endGroup()
         let body = ""
         for (const project of projects) {

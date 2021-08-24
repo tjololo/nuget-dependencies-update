@@ -25,18 +25,16 @@ export const getAllProjects = async (
             }
         }
     }
-    const filtered = filterProjectList(result, ignoreProjects)
-    return filtered
+    return filterProjectList(result, ignoreProjects)
 }
 
 const filterProjectList = (
     projects: string[],
     ignoreProjects: string[]
 ): string[] => {
-    const filtered = projects.filter(
+    return projects.filter(
         (project) => {
             return ignoreProjects.indexOf(project) === -1
         }
     )
-    return filtered
 }
