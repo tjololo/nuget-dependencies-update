@@ -1,5 +1,5 @@
 import { OutdatedPackage } from "../src/dotnet-command-manager";
-import {removeIgnoredDependencies} from "../src/utils"
+import {removeIgnoredDependencies, escapeString} from "../src/utils"
 
 test('ignored dependencies are removed from array', async () => {
     const array: OutdatedPackage[] = [
@@ -58,4 +58,25 @@ test('ignored dependencies handle empty ignore list', async () => {
             latest: '2.0.0',
         }
     ])
+})
+
+const cases = [
+    ["*", "\\*"],
+    ["#", '\\#'],
+    ['(', '\\('],
+    [')', '\\)'],
+    ['[', '\\['],
+    [']', '\\]'],
+    ['_', '\\_'],
+    ['\\', '\\\\'],
+    ['+', '\\+'],
+    ['-', '\\-'],
+    ['`', '\\`'],
+    ['<', '&lt;'],
+    ['>', '&gt;'],
+    // ['&', '&amp;']
+]
+
+test.each(cases)("given input: %s escapeString returns %s", async (input, expected) => {
+    expect(await escapeString(input)).toBe(expected)
 })
