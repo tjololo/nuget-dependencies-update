@@ -1,23 +1,20 @@
 import { error } from '@actions/core'
 import * as exec from '@actions/exec'
 import * as io from '@actions/io'
-import { dirname } from 'path'
 
 
 export class DotnetCommandManager {
-    private workingDirectory: string
     private dotnetPath: string
     private projectfile: string
 
-    constructor(workingDirectory: string, dotnetPath: string) {
-        this.projectfile = workingDirectory
-        this.workingDirectory = dirname(workingDirectory)
+    constructor(projectfile: string, dotnetPath: string) {
+        this.projectfile = projectfile
         this.dotnetPath = dotnetPath
     }
 
-    static async create(workingDirectory: string): Promise<DotnetCommandManager> {
+    static async create(projectfile: string): Promise<DotnetCommandManager> {
         const dotnetPath = await io.which('dotnet', true)
-        return new DotnetCommandManager(workingDirectory, dotnetPath)
+        return new DotnetCommandManager(projectfile, dotnetPath)
     }
 
     async restore(): Promise<void> {
@@ -75,7 +72,7 @@ export class DotnetCommandManager {
         const stderr: string[] = []
 
         const options = {
-            cwd: this.workingDirectory,
+            cwd: '.',
             env,
             ignoreReturnCode: true,
             listeners: {

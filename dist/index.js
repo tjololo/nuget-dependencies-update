@@ -39,17 +39,15 @@ exports.DotnetOutput = exports.OutdatedPackage = exports.DotnetCommandManager = 
 const core_1 = __nccwpck_require__(186);
 const exec = __importStar(__nccwpck_require__(514));
 const io = __importStar(__nccwpck_require__(436));
-const path_1 = __nccwpck_require__(622);
 class DotnetCommandManager {
-    constructor(workingDirectory, dotnetPath) {
-        this.projectfile = workingDirectory;
-        this.workingDirectory = path_1.dirname(workingDirectory);
+    constructor(projectfile, dotnetPath) {
+        this.projectfile = projectfile;
         this.dotnetPath = dotnetPath;
     }
-    static create(workingDirectory) {
+    static create(projectfile) {
         return __awaiter(this, void 0, void 0, function* () {
             const dotnetPath = yield io.which('dotnet', true);
-            return new DotnetCommandManager(workingDirectory, dotnetPath);
+            return new DotnetCommandManager(projectfile, dotnetPath);
         });
     }
     restore() {
@@ -110,7 +108,7 @@ class DotnetCommandManager {
             const stdout = [];
             const stderr = [];
             const options = {
-                cwd: this.workingDirectory,
+                cwd: '.',
                 env,
                 ignoreReturnCode: true,
                 listeners: {
