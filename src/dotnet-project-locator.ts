@@ -5,6 +5,7 @@ import { join } from "path"
 export const getAllProjects = async (
     rootFolder: string,
     recursive: boolean,
+    ignoreProjects: string[] = [],
     result: string[] = []
 ): Promise<string[]> => {
     const files: string[] = readdirSync(rootFolder)
@@ -13,7 +14,7 @@ export const getAllProjects = async (
         const file = join(rootFolder, fileName)
         if (statSync(file).isDirectory() && recursive) {
             try {
-                result = await getAllProjects(file, recursive, result)
+                result = await getAllProjects(file, recursive,ignoreProjects, result)
             } catch (error) {
                 continue
             }
@@ -24,5 +25,16 @@ export const getAllProjects = async (
             }
         }
     }
-    return result
+    return filterProjectList(result, ignoreProjects)
+}
+
+const filterProjectList = (
+    projects: string[],
+    ignoreProjects: string[]
+): string[] => {
+    return projects.filter(
+        (project) => {
+            return ignoreProjects.indexOf(project) === -1
+        }
+    )
 }

@@ -186,14 +186,14 @@ exports.getAllProjects = void 0;
 const core_1 = __nccwpck_require__(186);
 const fs_1 = __nccwpck_require__(747);
 const path_1 = __nccwpck_require__(622);
-const getAllProjects = (rootFolder, recursive, result = []) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllProjects = (rootFolder, recursive, ignoreProjects = [], result = []) => __awaiter(void 0, void 0, void 0, function* () {
     const files = fs_1.readdirSync(rootFolder);
     const regex = /^.+.csproj$/;
     for (const fileName of files) {
         const file = path_1.join(rootFolder, fileName);
         if (fs_1.statSync(file).isDirectory() && recursive) {
             try {
-                result = yield exports.getAllProjects(file, recursive, result);
+                result = yield exports.getAllProjects(file, recursive, ignoreProjects, result);
             }
             catch (error) {
                 continue;
@@ -206,9 +206,14 @@ const getAllProjects = (rootFolder, recursive, result = []) => __awaiter(void 0,
             }
         }
     }
-    return result;
+    return filterProjectList(result, ignoreProjects);
 });
 exports.getAllProjects = getAllProjects;
+const filterProjectList = (projects, ignoreProjects) => {
+    return projects.filter((project) => {
+        return ignoreProjects.indexOf(project) === -1;
+    });
+};
 
 
 /***/ }),
@@ -260,8 +265,9 @@ function execute() {
             const rootFolder = core.getInput("root-folder");
             const versionLimit = core.getInput("version-limit");
             const ignoreList = core.getMultilineInput("ignore").filter(s => s.trim() !== "");
+            const projectIgnoreList = core.getMultilineInput("ignore-project").filter(s => s.trim() !== "");
             core.startGroup("Find modules");
-            const projects = yield dotnet_project_locator_1.getAllProjects(rootFolder, recursive);
+            const projects = yield dotnet_project_locator_1.getAllProjects(rootFolder, recursive, projectIgnoreList);
             core.endGroup();
             let body = "";
             for (const project of projects) {

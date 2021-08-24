@@ -9,6 +9,15 @@ test('locate projects recursivly', async () => {
     expect(actual).toEqual(expected)
 })
 
+test('locate projects recursivly with ignore', async () => {
+    const ignoreProject = ["test/fixtures/root/project1.csproj"]
+    const expected = [
+        "test/fixtures/root/sub-folder/project2.csproj"
+    ]
+    const actual = await locator.getAllProjects("test/fixtures/root", true, ignoreProject)
+    expect(actual).toEqual(expected)
+})
+
 test('locate projects not recursivly', async () => {
     const expected = [
         "test/fixtures/root/project1.csproj",

@@ -58,6 +58,7 @@ jobs:
 | `comment-updated` | wheter or not the dependencies that are update should be included in the body output | `false` |
 | `version-limit` | Limit if update should update to latest major, minor or patch version. [latest,minor,patch] | `latest` |
 | `ignore` | Dependencies to ignore during update. Multiple nugets separated by newline | '' |
+| `ignore-project` | If recursive mode is enabled you can specify paths for projects to ignore. Multiple projects separated by newline | '' |
 
 
 ### Action outputs
