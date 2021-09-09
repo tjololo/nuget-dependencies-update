@@ -1,8 +1,6 @@
-name: Test
+name: Build distribution
 on:
   push:
-    branches: ['**']
-  pull_request:
     branches: ['main']
 
 jobs:
@@ -27,3 +25,10 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: test bpm build
         run: npm run build
+      - name: Create Pull Request for new distribution package
+        uses: peter-evans/create-pull-request@v3
+        with:
+          title: "Updated dist package based on commit ${{ GITHUB_SHA }}"
+          branch: "dist/updated-dist-for-${{ GITHUB_SHA }}"
+          body: "Based on changes in this commit the distribution has changed"
+          labels: release
