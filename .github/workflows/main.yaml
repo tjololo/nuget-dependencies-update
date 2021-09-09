@@ -1,0 +1,34 @@
+name: Build distribution
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  run-unit-test:
+    runs-on: ubuntu-latest
+    name: Run unit tests
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: npm install
+        run: npm install
+      - name: run jest test
+        run: npm test
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: test bpm build
+        run: npm run build
+      - name: Create Pull Request for new distribution package
+        uses: peter-evans/create-pull-request@v3
+        with:
+          title: "Updated dist package based on commit ${{ GITHUB_SHA }}"
+          branch: "dist/updated-dist-for-${{ GITHUB_SHA }}"
+          body: "Based on changes in this commit the distribution has changed"
+          labels: release
