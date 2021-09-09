@@ -105,5 +105,6 @@ typings/
 # Build folder
 /lib
 
-#sonar-report
+# sonar
 test-report.xml
+.scannerwork/
