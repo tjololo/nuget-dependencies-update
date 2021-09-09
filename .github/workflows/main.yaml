@@ -6,7 +6,7 @@ on:
 jobs:
   run-unit-test:
     runs-on: ubuntu-latest
-    name: Run unit tests
+    name: Test and prepare distribution
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -23,12 +23,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      - name: test bpm build
+      - name: run build
         run: npm run build
       - name: Create Pull Request for new distribution package
         uses: peter-evans/create-pull-request@v3
         with:
           title: "Updated dist package based on commit ${{ github.sha }}"
-          branch: "dist/updated-dist-for-${{ github.sha }}"
+          branch: "dist/updated-dist-for-main"
           body: "Based on changes in this commit the distribution has changed"
           labels: release

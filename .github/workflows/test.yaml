@@ -1,7 +1,5 @@
 name: Test
 on:
-  push:
-    branches: ['**']
   pull_request:
     branches: ['main']
 
@@ -25,5 +23,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      - name: test bpm build
+      - name: test npm build
         run: npm run build
