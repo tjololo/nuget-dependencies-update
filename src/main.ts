@@ -45,7 +45,13 @@ async function execute(): Promise<void> {
         }
         core.setOutput("body", body)
     } catch (e) {
-        core.setFailed(e.message)
+        if (e instanceof Error) {
+            core.setFailed(e.message)
+        } else if (typeof e === 'string') {
+            core.setFailed(e)
+        } else {
+            core.setFailed("Some unknown error occured, please see logs")
+        }
     }
 }
 execute()
