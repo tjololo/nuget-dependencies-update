@@ -28,7 +28,7 @@ jobs:
       - name: Create Pull Request for new distribution package
         uses: peter-evans/create-pull-request@v3
         with:
-          title: "Updated dist package based on commit ${{ GITHUB_SHA }}"
-          branch: "dist/updated-dist-for-${{ GITHUB_SHA }}"
+          title: "Updated dist package based on commit ${{ github.sha }}"
+          branch: "dist/updated-dist-for-${{ github.sha }}"
           body: "Based on changes in this commit the distribution has changed"
           labels: release
