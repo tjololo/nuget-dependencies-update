@@ -33,5 +33,5 @@ outputs:
   body:
     description: 'Body reprecenting updates made'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
